@@ -9,9 +9,10 @@ services:
     working_dir: /app  # Set the working directory inside the container
     ports:
       - "8000:8000"  # Map the container's port 8000 to the host's port 8000
+      - "8501:8501"  # Map the container's port for Streamlit UI
     environment:
       - PYTHONUNBUFFERED=1  # Ensure Python output is shown in real time
-      - ENV_FILE_LOCATION=/app/.env  # Specify the location of the .env file inside the container
+      - ENV_FILE_LOCATION=.env  # Specify the location of the .env file
       - OPENAI_API_KEY=${OPENAI_API_KEY}  # Load the OpenAI API Key from environment variables
     command: ["uvicorn", "public.code.api:app", "--host", "0.0.0.0", "--port", "8000"]  # Start the FastAPI app
 
@@ -24,7 +25,7 @@ services:
     entrypoint: ["/bin/bash", "-c", "cron && tail -f /var/log/cron.log"]  # Run the cron service
     environment:
       - PYTHONUNBUFFERED=1  # Ensure Python output is shown in real time
-      - ENV_FILE_LOCATION=/app/.env  # Specify the location of the .env file inside the container
+      - ENV_FILE_LOCATION=.env  # Specify the location of the .env file
       - OPENAI_API_KEY=${OPENAI_API_KEY}  # Load the OpenAI API Key from environment variables
 
 volumes:
