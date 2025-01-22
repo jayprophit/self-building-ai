@@ -1,12 +1,19 @@
 import os
 import openai
 import subprocess
+from dotenv import load_dotenv
 
-# Set OpenAI API key
+# Load environment variables from .env file
+load_dotenv()
+
+# Set OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def analyze_logs():
-    # Analyze logs for errors
+    """
+    Analyze logs for errors. This function reads a log file and looks for any
+    lines that contain the word 'ERROR'.
+    """
     log_file = "./logs/error.log"
     if os.path.exists(log_file):
         with open(log_file, "r") as f:
@@ -41,11 +48,14 @@ def apply_fix(file_path, fix_message):
     """
     Apply the suggested fix to the file.
     This is a simple demonstration of adding a comment to the code.
-    In a real system, this would be more complex.
+    In a real system, this would be more complex and would need proper error handling and modification of the code.
     """
-    with open(file_path, "a") as file:
-        file.write(f"\n# Suggested Fix: {fix_message}\n")
-    print(f"Fix applied to {file_path}: {fix_message}")
+    try:
+        with open(file_path, "a") as file:
+            file.write(f"\n# Suggested Fix: {fix_message}\n")
+        print(f"Fix applied to {file_path}: {fix_message}")
+    except Exception as e:
+        print(f"Error applying fix to {file_path}: {str(e)}")
 
 def self_iterate():
     """
@@ -61,5 +71,23 @@ def self_iterate():
     else:
         print("No errors found. System is up to date.")
 
+def schedule_cron_job():
+    """
+    Schedules the self-iteration function to run at regular intervals using cron.
+    """
+    cron_command = "0 * * * * python /app/private/code/self_iteration.py"
+    try:
+        # Update the cron jobs and add the new job to the cron table
+        current_cron_jobs = subprocess.check_output("crontab -l", shell=True).decode()
+        new_cron_jobs = current_cron_jobs + f"\n{cron_command}\n"
+        subprocess.run(f'echo "{new_cron_jobs}" | crontab -', shell=True)
+        print("Cron job scheduled to run self_iteration.py every hour.")
+    except Exception as e:
+        print(f"Error scheduling cron job: {str(e)}")
+
 if __name__ == "__main__":
+    # Call the self-iteration function
     self_iterate()
+    
+    # Schedule the cron job (for Docker container setup)
+    schedule_cron_job()
