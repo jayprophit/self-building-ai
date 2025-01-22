@@ -1,4 +1,5 @@
 import streamlit as st
+from public.ui.streamlit_ui import *  # Import the UI file
 import openai
 from dotenv import load_dotenv
 import os
