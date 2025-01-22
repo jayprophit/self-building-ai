@@ -1,16 +1,27 @@
 {
-  "name": "My Dev Container",
-  "dockerComposeFile": [
-    "./.devcontainer/docker-compose.yml"
-  ],
-  "service": "my_project",
-  "workspaceFolder": "/app",
-  "extensions": [
-    "ms-python.python",
-    "ms-vscode.cpptools",
-    "ms-vscode-remote.vscode-remote-extensionpack"
+  "name": "Self-Building AI",
+  "image": "python:3.9",  # Use the official Python 3.9 image
+  "build": {
+    "dockerfile": "Dockerfile",  # Path to the Dockerfile
+    "context": ".."  # Set the context to the parent directory
+  },
+  "postCreateCommand": "pip install -r requirements.txt",  # Install dependencies after container creation
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/app,type=bind"  # Mount the local workspace folder to /app inside the container
   ],
   "settings": {
-    "python.pythonPath": "/usr/local/bin/python"
+    "python.pythonPath": "/usr/local/bin/python"  # Set the Python path for VS Code
+  },
+  "extensions": [
+    "ms-python.python",  # Install Python extension for VS Code
+    "ms-azuretools.vscode-docker"  # Install Docker extension for VS Code
+  ],
+  "portsAttributes": {
+    "8000": {
+      "label": "FastAPI App"
+    },
+    "8501": {
+      "label": "Streamlit UI"
+    }
   }
 }
