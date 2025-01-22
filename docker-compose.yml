@@ -1,13 +1,29 @@
-version: "3.9"
+version: "3.9"  # Specify the Docker Compose version
+
 services:
   self_building_ai:
-    build: .
-    container_name: self_building_ai_container
+    build: .  # Build the Docker image from the current directory
+    container_name: self_building_ai_container  # Name the container
     volumes:
-      - .:/app  # Mounts the entire project directory to /app inside the container
-    working_dir: /app  # Set the working directory to /app (root of the project)
+      - .:/app  # Mount the entire project directory to /app inside the container
+    working_dir: /app  # Set the working directory inside the container
     ports:
-      - "8000:8000"  # Exposes FastAPI on port 8000
+      - "8000:8000"  # Map the container's port 8000 to the host's port 8000
     environment:
-      - PYTHONUNBUFFERED=1
-    command: ["uvicorn", "public.code.api:app", "--host", "0.0.0.0", "--port", "8000"]  # Correct import string
+      - PYTHONUNBUFFERED=1  # Ensure Python output is shown in real time
+      - ENV_FILE_LOCATION=.env  # Specify the location of the .env file
+    command: ["uvicorn", "public.code.api:app", "--host", "0.0.0.0", "--port", "8000"]  # Start the FastAPI app
+
+  cron_service:
+    build: .  # Use the same Docker image as the main service
+    container_name: cron_service_container  # Name the cron service container
+    volumes:
+      - .:/app  # Mount the entire project directory to /app inside the container
+    working_dir: /app  # Set the working directory inside the container
+    entrypoint: ["/bin/bash", "-c", "cron && tail -f /var/log/cron.log"]  # Run the cron service
+    environment:
+      - PYTHONUNBUFFERED=1  # Ensure Python output is shown in real time
+      - ENV_FILE_LOCATION=.env  # Specify the location of the .env file
+
+volumes:
+  app_data:  # Named volume for persistent data storage
