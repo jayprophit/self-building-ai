@@ -1,2 +1,2 @@
 # self-building-ai
-A self-building AI project for autonomous development
+A self-building AI that builds updates, and self improves
