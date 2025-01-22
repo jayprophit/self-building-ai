@@ -1,3 +1,9 @@
+# At the top of your streamlit_ui.py file
+st.markdown(
+    f'<link rel="stylesheet" href="public/ui/styles.css">',
+    unsafe_allow_html=True
+)
+
 import streamlit as st
 import openai
 from dotenv import load_dotenv
