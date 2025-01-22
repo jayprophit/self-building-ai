@@ -9,6 +9,7 @@ COPY . /app
 
 # Install required Python libraries
 RUN pip install -r requirements.txt
+RUN pip install tensorflow
 
 # Define the entry point for the container
 CMD ["python", "private/code/main.py"]

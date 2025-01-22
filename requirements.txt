@@ -3,3 +3,4 @@ fastapi
 docker
 boto3
 google-cloud-storage
+tensorflow==2.18.0
