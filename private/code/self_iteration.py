@@ -1,8 +1,8 @@
 import os
-from dotenv import load_dotenv
-import openai
 import logging
+import openai
 from datetime import datetime
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
@@ -12,9 +12,10 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 if not openai.api_key:
     raise RuntimeError("OpenAI API Key not found in environment variables.")
 
-# Setup logging for the application
+
+# Setup logging
 LOG_FILE = './private/logs/self_iteration.log'
-logging.basicConfig(filename=LOG_FILE, level=logging.INFO, 
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Directory for logs
