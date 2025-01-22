@@ -4,3 +4,4 @@ openai                 # For OpenAI API integration
 python-dotenv          # For loading environment variables from .env files
 tensorflow             # For machine learning and AI-related tasks
 streamlit              # For building user-friendly web interfaces
+requests
