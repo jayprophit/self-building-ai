@@ -1,9 +1,6 @@
-openai
-python-dotenv
-fastapi
-uvicorn
-docker
-boto3
-google-cloud-storage
-tensorflow==2.18.0
-streamlit
+fastapi                # For building the web API
+uvicorn                # For running the FastAPI app
+openai                 # For OpenAI API integration
+python-dotenv          # For loading environment variables from .env files
+tensorflow             # For machine learning and AI-related tasks
+streamlit              # For building user-friendly web interfaces
