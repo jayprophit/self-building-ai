@@ -1,7 +1,7 @@
-fastapi                # For building the web API
-uvicorn                # For running the FastAPI app
-openai                 # For OpenAI API integration
-python-dotenv          # For loading environment variables from .env files
-tensorflow             # For machine learning and AI-related tasks
-streamlit              # For building user-friendly web interfaces
+fastapi==0.95.1        # For building the web API
+uvicorn==0.20.0        # For running the FastAPI app
+openai==0.11.0         # For OpenAI API integration
+python-dotenv==0.20.0  # For loading environment variables from .env files
+streamlit==1.17.1      # For building user-friendly web interfaces
+tensorflow==2.11.0     # For machine learning and AI-related tasks
 requests
