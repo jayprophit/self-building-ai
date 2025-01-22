@@ -4,8 +4,10 @@ services:
     build: .
     container_name: self_building_ai_container
     volumes:
-      - .:/app
+      - .:/app  # Mounts the entire project directory to /app inside the container
+    working_dir: /app  # Set the working directory to /app (root of the project)
     ports:
-      - "8080:8080"
+      - "8000:8000"  # Exposes FastAPI on port 8000
     environment:
       - PYTHONUNBUFFERED=1
+    command: ["uvicorn", "public.code.api:app", "--host", "0.0.0.0", "--port", "8000"]  # Correct import string

@@ -1,5 +1,6 @@
 openai
 fastapi
+uvicorn
 docker
 boto3
 google-cloud-storage
