@@ -12,6 +12,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1  # Ensure Python output is shown in real time
       - ENV_FILE_LOCATION=.env  # Specify the location of the .env file
+      - OPENAI_API_KEY=${OPENAI_API_KEY}  # Load the OpenAI API Key from environment variables
     command: ["uvicorn", "public.code.api:app", "--host", "0.0.0.0", "--port", "8000"]  # Start the FastAPI app
 
   cron_service:
@@ -24,6 +25,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1  # Ensure Python output is shown in real time
       - ENV_FILE_LOCATION=.env  # Specify the location of the .env file
+      - OPENAI_API_KEY=${OPENAI_API_KEY}  # Load the OpenAI API Key from environment variables
 
 volumes:
   app_data:  # Named volume for persistent data storage
