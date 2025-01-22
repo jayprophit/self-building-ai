@@ -82,7 +82,7 @@ def example_add_and_retrain():
 
 # Main function for continuous training and improvement
 def main():
-    # Initial training of the model
+    # Initial training of the model if it does not exist
     if not os.path.exists(MODEL_PATH):
         print("Model not found, training from scratch.")
         train_model()
