@@ -1,0 +1,5 @@
+openai
+fastapi
+docker
+boto3
+google-cloud-storage
