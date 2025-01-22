@@ -28,14 +28,18 @@ elif choice == "Code Fixer":
 
     if st.button("Fix Error"):
         if user_input:
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=f"Fix the following error: {user_input}",
-                max_tokens=100
-            )
-            fix = response.choices[0].text.strip()
-            st.write("Suggested Fix:")
-            st.code(fix)
+            try:
+                # Generate fix using OpenAI
+                response = openai.Completion.create(
+                    engine="text-davinci-003",
+                    prompt=f"Fix the following error: {user_input}",
+                    max_tokens=150
+                )
+                fix = response.choices[0].text.strip()
+                st.write("Suggested Fix:")
+                st.code(fix)
+            except Exception as e:
+                st.error(f"Error generating fix: {str(e)}")
         else:
             st.warning("Please enter an error message.")
 
@@ -49,11 +53,15 @@ elif choice == "Preview":
 
     if st.button("Render Preview"):
         if code_input:
-            components.html(code_input, height=400)
+            try:
+                # Render HTML/CSS preview
+                components.html(code_input, height=400)
+            except Exception as e:
+                st.error(f"Error rendering preview: {str(e)}")
         else:
             st.warning("Please enter HTML/CSS code to preview.")
 
-    # You can add more options for previewing different kinds of content (e.g., JavaScript, 3D models, etc.)
+    # Additional Preview Options
     st.subheader("Additional Preview Options")
     st.write("Here, you can also explore different project types.")
     project_type = st.selectbox("Select a project type to preview", ["Website", "App", "Game", "3D Model"])
