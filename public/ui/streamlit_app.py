@@ -3,11 +3,10 @@ import openai
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Streamlit app
 st.title("Self-Building AI Interface")
 
 st.sidebar.header("Navigation")
