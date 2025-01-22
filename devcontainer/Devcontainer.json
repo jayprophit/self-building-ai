@@ -1,13 +1,16 @@
 {
-  "name": "Self-Building AI",
-  "dockerFile": "Dockerfile",
+  "name": "My Dev Container",
+  "dockerComposeFile": [
+    "./.devcontainer/docker-compose.yml"
+  ],
+  "service": "my_project",
+  "workspaceFolder": "/app",
   "extensions": [
     "ms-python.python",
-    "ms-python.vscode-pylance",
-    "github.vscode-pull-request-github"
+    "ms-vscode.cpptools",
+    "ms-vscode-remote.vscode-remote-extensionpack"
   ],
   "settings": {
     "python.pythonPath": "/usr/local/bin/python"
-  },
-  "postCreateCommand": "pip install -r requirements.txt"
+  }
 }
