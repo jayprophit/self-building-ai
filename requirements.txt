@@ -1,4 +1,5 @@
 openai
+python-dotenv
 fastapi
 uvicorn
 docker
