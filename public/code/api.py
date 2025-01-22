@@ -15,10 +15,12 @@ if not OPENAI_API_KEY:
     raise RuntimeError("OpenAI API Key not found in environment variables.")
 openai.api_key = OPENAI_API_KEY
 
+# Root endpoint
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Self-Building AI API"}
 
+# Fix code endpoint
 @app.post("/fix-code/")
 def fix_code(error_message: str):
     """
@@ -36,3 +38,18 @@ def fix_code(error_message: str):
         return {"error_message": error_message, "fix": fix}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Health check endpoint
+@app.get("/health")
+def health_check():
+    """
+    Endpoint to check if the app is healthy.
+    This is used by Render to check the app's status.
+    """
+    try:
+        # Check if the OpenAI API key is available
+        if not openai.api_key:
+            raise RuntimeError("OpenAI API key is not set.")
+        return {"status": "healthy"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")
