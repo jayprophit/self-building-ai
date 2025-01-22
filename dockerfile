@@ -18,3 +18,8 @@ EXPOSE 8000
 
 # Run the application
 CMD ["uvicorn", "public.code.api:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# Run Cron job
+RUN apt-get update && apt-get install -y cron
+COPY ./private/code/self_iteration.py /app/self_iteration.py
+RUN (crontab -l ; echo "0 * * * * python /app/self_iteration.py") | crontab -
