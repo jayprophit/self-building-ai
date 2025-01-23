@@ -2,6 +2,7 @@ import os
 import openai
 from dotenv import load_dotenv
 import logging
+from fastapi import FastAPI
 
 # Load environment variables
 load_dotenv()
@@ -16,9 +17,40 @@ LOG_FILE = './private/logs/main.log'
 logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Initialize FastAPI app
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    logging.info("Root endpoint hit.")
+    return {"message": "Welcome to the Self-Building AI!"}
+
+@app.post("/fix_error/")
+def fix_error(error_message: str):
+    """
+    API endpoint to fix errors using OpenAI
+    """
+    try:
+        logging.info(f"Received error message: {error_message}")
+        
+        # Generate fix suggestion using OpenAI
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Fix the following error: {error_message}",
+            max_tokens=100
+        )
+        fix = response.choices[0].text.strip()
+        
+        logging.info(f"OpenAI response: {fix}")
+        return {"suggested_fix": fix}
+    
+    except Exception as e:
+        logging.error(f"Error during processing: {str(e)}")
+        return {"error": str(e)}
+
 def main():
     """
-    Main function to run the self-building AI.
+    Main function to run the self-building AI process.
     """
     try:
         logging.info("Running the main process.")
@@ -31,7 +63,7 @@ def main():
         )
         logging.info(f"OpenAI response: {response.choices[0].text.strip()}")
         
-        # Add any other process here (e.g., training, analyzing data, etc.)
+        # Add any other processes here (e.g., training, analyzing data, etc.)
 
     except Exception as e:
         logging.error(f"Error during execution: {str(e)}")
