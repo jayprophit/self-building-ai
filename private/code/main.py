@@ -3,6 +3,7 @@ import openai
 from dotenv import load_dotenv
 import logging
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 # Load environment variables
 load_dotenv()
@@ -19,6 +20,9 @@ logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
 
 # Initialize FastAPI app
 app = FastAPI()
+
+# Mount static files (serve files from the "public/static" directory)
+app.mount("/static", StaticFiles(directory="public/static"), name="static")
 
 @app.get("/")
 def read_root():
