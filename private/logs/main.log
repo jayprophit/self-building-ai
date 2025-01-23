@@ -1,7 +1,77 @@
-2025-01-22 12:34:56,789 - INFO - Running the main process.
-2025-01-22 12:35:00,123 - INFO - OpenAI response: Hello, world!
-2025-01-22 12:35:10,456 - INFO - Received error message: Fix this error: FileNotFoundError
-2025-01-22 12:35:15,789 - INFO - OpenAI response: The error is due to missing file path. Ensure the file exists.
-2025-01-22 12:35:20,567 - ERROR - Error during execution: OpenAI API rate limit exceeded.
-2025-01-22 12:35:25,678 - INFO - Root endpoint hit.
-2025-01-22 12:35:30,789 - ERROR - Error during processing: API Key not found.
+import os
+import openai
+from dotenv import load_dotenv
+import logging
+from fastapi import FastAPI, HTTPException
+
+# Load environment variables
+load_dotenv()
+
+# Set OpenAI API Key
+openai.api_key = os.getenv("OPENAI_API_KEY")
+if not openai.api_key:
+    raise RuntimeError("OpenAI API Key not found in environment variables.")
+
+# Setup logging
+LOG_FILE = './private/logs/main.log'
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Initialize FastAPI app
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    logging.info("Root endpoint hit.")
+    return {"message": "Welcome to the Self-Building AI!"}
+
+@app.post("/fix_error/")
+def fix_error(error_message: str):
+    """
+    API endpoint to fix errors using OpenAI
+    """
+    try:
+        logging.info(f"Received error message: {error_message}")
+        
+        # Generate fix suggestion using OpenAI
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Fix the following error: {error_message}",
+            max_tokens=100
+        )
+        fix = response.choices[0].text.strip()
+        
+        logging.info(f"OpenAI response: {fix}")
+        return {"suggested_fix": fix}
+    
+    except openai.error.OpenAIError as e:
+        logging.error(f"OpenAI API error: {str(e)}")
+        raise HTTPException(status_code=500, detail="OpenAI API error.")
+    except Exception as e:
+        logging.error(f"Error during processing: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal server error.")
+
+def main():
+    """
+    Main function to run the self-building AI process.
+    """
+    try:
+        logging.info("Running the main process.")
+        
+        # Example: Generate a simple completion from OpenAI API
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt="Hello, world!",
+            max_tokens=5
+        )
+        logging.info(f"OpenAI response: {response.choices[0].text.strip()}")
+        
+        # Add any other processes here (e.g., training, analyzing data, etc.)
+
+    except openai.error.OpenAIError as e:
+        logging.error(f"OpenAI API error during main process: {str(e)}")
+    except Exception as e:
+        logging.error(f"Error during execution: {str(e)}")
+
+if __name__ == "__main__":
+    main()
