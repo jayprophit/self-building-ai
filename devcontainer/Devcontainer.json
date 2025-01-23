@@ -1,27 +1,31 @@
 {
   "name": "Self-Building AI",
-  "image": "python:3.9",  # Use the official Python 3.9 image
-  "build": {
-    "dockerfile": "Dockerfile",  # Path to the Dockerfile
-    "context": ".."  # Set the context to the parent directory
-  },
-  "postCreateCommand": "pip install -r requirements.txt",  # Install dependencies after container creation
+  "context": "..",  // Set the context to the parent directory
+  "dockerFile": "Dockerfile",  // Path to the Dockerfile
+  "postCreateCommand": "pip install -r requirements.txt",  // Install dependencies after container creation
   "mounts": [
-    "source=${localWorkspaceFolder},target=/app,type=bind"  # Mount the local workspace folder to /app inside the container
+    "source=${localWorkspaceFolder},target=/workspace,type=bind"  // Mount the local workspace folder to /workspace inside the container
   ],
   "settings": {
-    "python.pythonPath": "/usr/local/bin/python"  # Set the Python path for VS Code
+    "python.pythonPath": "/usr/local/bin/python",  // Set the Python path for VS Code
+    "python.autoComplete.extraPaths": [
+      "/workspace"  // Ensure autocomplete works inside the workspace
+    ]
   },
   "extensions": [
-    "ms-python.python",  # Install Python extension for VS Code
-    "ms-azuretools.vscode-docker"  # Install Docker extension for VS Code
+    "ms-python.python",  // Install Python extension for VS Code
+    "ms-vscode.cpptools",  // Install C++ tools extension (if needed)
+    "esbenp.prettier-vscode",  // Prettier for code formatting
+    "dbaeumer.vscode-eslint",  // ESLint for JavaScript/TypeScript linting
+    "ms-azuretools.vscode-docker"  // Docker extension for VS Code (optional, but useful)
   ],
-  "portsAttributes": {
+  "remoteUser": "root",  // Use root as the default user for the container
+  "ports": {
     "8000": {
-      "label": "FastAPI App"
+      "label": "FastAPI App"  // Label for FastAPI port
     },
     "8501": {
-      "label": "Streamlit UI"
+      "label": "Streamlit UI"  // Label for Streamlit UI port
     }
   }
 }
