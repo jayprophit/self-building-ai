@@ -1,24 +1,24 @@
 # Use the official Python 3.9 image
-FROM python:3.9
+FROM python:3.9-slim
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies (e.g., cron for scheduled tasks)
 RUN apt-get update && apt-get install -y \
     cron \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*  # Clean up apt cache to reduce image size
 
 # Copy the current directory contents into the container
 COPY . .
 
-# Install Python dependencies
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install Python dependencies from requirements.txt
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt  # Install dependencies without cache
 
 # Expose ports for FastAPI and Streamlit
-EXPOSE 8000
-EXPOSE 8501
+EXPOSE 8000  # FastAPI port
+EXPOSE 8501  # Streamlit port
 
-# Command to run FastAPI with uvicorn
+# Command to run FastAPI with uvicorn (replace 'public.code.api:app' with your FastAPI app location)
 CMD ["uvicorn", "public.code.api:app", "--host", "0.0.0.0", "--port", "8000"]
