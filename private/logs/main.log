@@ -1,1 +1,7 @@
-1
+2025-01-22 12:34:56,789 - INFO - Running the main process.
+2025-01-22 12:35:00,123 - INFO - OpenAI response: Hello, world!
+2025-01-22 12:35:10,456 - INFO - Received error message: Fix this error: FileNotFoundError
+2025-01-22 12:35:15,789 - INFO - OpenAI response: The error is due to missing file path. Ensure the file exists.
+2025-01-22 12:35:20,567 - ERROR - Error during execution: OpenAI API rate limit exceeded.
+2025-01-22 12:35:25,678 - INFO - Root endpoint hit.
+2025-01-22 12:35:30,789 - ERROR - Error during processing: API Key not found.
