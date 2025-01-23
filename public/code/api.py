@@ -1,7 +1,9 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 import openai
+from .database import get_db, Base, engine  # Assuming database.py is set up for SQLAlchemy
 
 # Load environment variables
 load_dotenv()
@@ -13,6 +15,19 @@ if not openai.api_key:
 
 # Initialize FastAPI app
 app = FastAPI()
+
+# Example of a database model
+from sqlalchemy import Column, Integer, String
+
+class Item(Base):
+    __tablename__ = "items"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    description = Column(String)
+
+# Create tables in the database
+Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 def read_root():
@@ -33,3 +48,11 @@ def fix_error(error_message: str):
         return {"suggested_fix": fix}
     except Exception as e:
         return {"error": str(e)}
+
+@app.get("/items/")
+def get_items(db: Session = Depends(get_db)):
+    """
+    Endpoint to get items from the database
+    """
+    items = db.query(Item).all()  # Query the 'Item' model
+    return items
