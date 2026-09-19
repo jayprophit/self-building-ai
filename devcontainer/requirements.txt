@@ -1,15 +1,15 @@
 # General dependencies
 pandas==1.5.3
-scikit-learn==1.1.3
-joblib==1.1.0
+scikit-learn==1.5.0
+joblib==1.2.0
 sqlalchemy==1.4.31
 psycopg2==2.9.3
 fastapi==0.95.1        # For building the web API
 uvicorn==0.20.0        # For running the FastAPI app
 openai==0.11.0         # For OpenAI API integration
-python-dotenv==0.20.0  # For loading environment variables from .env files
-streamlit==1.17.1      # For building user-friendly web interfaces
-tensorflow==2.11.0     # For machine learning and AI-related tasks
+python-dotenv==1.2.2  # For loading environment variables from .env files
+streamlit==1.54.0      # For building user-friendly web interfaces
+tensorflow==2.12.1     # For machine learning and AI-related tasks
 requests
 
 # For Docker and development environments
